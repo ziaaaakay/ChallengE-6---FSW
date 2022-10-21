@@ -1,0 +1,759 @@
+openapi: 3.0.0
+info:
+  title: Binar Academy Post API
+  version: 1.0.0
+servers:
+  - url: https://localhost:8000
+    description: Development server
+  - url: https://staging.com
+    description: Staging server
+  - url: https://production.com
+    description: Production server
+tags:
+  - name: Car
+    description: Related about Car
+  - name: User
+    description: Operations about user
+paths:
+  /api/v1/cars:
+    get:
+      tags:
+        - Car
+      summary: Get all data for user
+      description: To retrive the list of posts
+      responses:
+        '200':
+          description: If data successfully retrived
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  data:
+                    type: object
+                    properties:
+                      posts:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: integer
+                              format: int64
+                              example: 1
+                            name:
+                              type: string
+                              example: Honda
+                            price:
+                              type: integer
+                              example: 20000
+                            size:
+                              type: string
+                              example: large
+                            image:
+                              type: string
+                              example: Test image
+                            createdBy:
+                              type: integer
+                              example: 1
+                            deletedBy:
+                              type: integer
+                              example: 2
+                            updatedBy:
+                              type: integer
+                              example: 1
+                            available:
+                              type: boolean
+                              example: true or false
+                            createdAt:
+                              type: string
+                              example: '2022-10-12T13:25:21.995Z'
+                            updatedAt:
+                              type: string
+                              example: '2022-10-12T13:25:21.995Z'
+                      count:
+                        type: integer
+                        format: int64
+                        example: 10
+        '404':
+          description: If failed to retrive the data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: FAIL
+
+    post:
+        tags:
+          - Car
+        summary: Create cars data
+        requestBody:
+          content:
+            application/json:
+              schema:
+                          properties:
+                            name:
+                              type: string
+                              example: Honda
+                            size:
+                              type: string
+                              example: medium
+                            price:
+                              type: number
+                              example: 10000
+                            image:
+                              type: string
+                              example: 'Honda.jpg'
+          required: true
+        responses:
+          '200':
+            description: A post was created
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: Created
+                    data:
+                      type: object
+                      properties:
+                        posts:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: integer
+                                format: int64
+                                example: 3
+                              name:
+                                type: string
+                                example: Honda
+                              size:
+                                type: string
+                                example: Medium
+                              createdBy:
+                                type: integer
+                                example: '1'
+                              image:
+                                type: string
+                                example: "http://res.cloudinary.com/dptgh7efj/image/upload/v1666344280/samples/fxyfzjgujxlbs8md6wtc.jpg"  
+                              updatedAt:
+                                type: string
+                                example: '2022-10-21T09:24:41.017Z'
+                              createdAt:
+                                type: string
+                                example: '2022-10-21T09:24:41.017Z'
+                              updatedBy:
+                                type: string
+                                example: null
+                              deletedBy:
+                                type: string
+                                example: null
+                                
+          '401':
+            description: If member tried to put cars data
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: Unauthorized
+                    message:
+                      type: string
+                      example: Danger area, not user access zone
+                  
+  /api/v1/cars/{id}:
+    get:
+      tags:
+        - Car
+      summary: Get data by id
+      description: To retrive data by id
+      parameters:
+      - name: id
+        in: path
+        description: ID of the post
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: If data successfully retrived
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  data:
+                    type: object
+                    properties:
+                      posts:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: integer
+                              format: int64
+                              example: 1
+                            title:
+                              type: string
+                              example: Test Title
+                            body:
+                              type: string
+                              example: Test Body
+                            createdAt:
+                              type: string
+                              example: '2022-10-12T13:25:21.995Z'
+                            updatedAt:
+                              type: string
+                              example: '2022-10-12T13:25:21.995Z'
+                      count:
+                        type: integer
+                        format: int64
+                        example: 10
+        '400':
+          description: If failed to retrive the data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: FAIL
+                  message:
+                    type: string
+                    example: Bad request
+    
+    put:
+      tags:
+        - Car
+      summary: Put data by id
+      description: To retrive the list of posts
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Car
+        required: true
+        schema:
+          properties:
+           id:
+            type: object
+            example: 3
+      requestBody:
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Ferrari
+                  price:
+                    type: number
+                    example: 3200000
+        required: true
+      responses:
+        '200':
+          description: If data successfully retrived
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+        '401':
+          description: If member tried to put cars data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Danger area, not user access zone
+                    
+    delete:
+      tags:
+        - Car
+      summary: Delete data by id
+      description: To delete data by id
+      parameters:
+      - name: id
+        in: path
+        description: ID of the post
+        required: true
+        schema:
+          properties:
+            id:
+              type: object
+              example: 3
+      responses:
+        '204':
+          description: no content
+  
+  /api/v1/cars/all:
+    get:
+      tags:
+        - Car
+      summary: Get all data for role admin and super admin
+      description: To retrive the list of post
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Ok
+                  data:
+                    type: object
+                    properties:
+                      cars:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            price:
+                              type: integer
+                            size:
+                              type: string
+                            image:
+                              type: string
+                            createdBy:
+                              type: integer
+                            updatedBy:
+                              type: integer
+                            deletedBy:
+                              type: integer
+                            available:
+                              type: boolean
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type: string
+                        example: 
+                          - id: 1
+                            name: Honda Civic
+                            price: 999000
+                            size: Medium
+                            image: http://res.cloudinary.com/dptgh7efj/image/upload/v1666151231/samples/o5lxkstoyexkbbltz9tm.jpg
+                            createdBy: 2
+                            updatedBy: 14
+                            deletedBy: null
+                            available: true
+                            createdAt: 2022-10-19T03:47:12.723Z
+                            updatedAt: 2022-10-19T03:47:12.723Z
+                          - id: 2
+                            name: Lamborigini Galardo
+                            price: 995000
+                            size: Small
+                            image: http://res.cloudinary.com/dptgh7efj/image/upload/v1666151231/samples/o5lxkstoyexkbbltz9tm.jpg
+                            createdBy: 3
+                            updatedBy: 11
+                            deletedBy: 3
+                            available: false
+                            createdAt: 2022-10-19T03:47:12.723Z
+                            updatedAt: 2022-10-19T03:47:12.723Z
+        '401':
+          description: If member tried to get all car data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+  
+  /api/v1/cars/search/{key}:
+    get:
+      tags:
+        - Car
+      summary: Return searching result by key value
+      description: Menampilkan hasil pencarian mobil yang tersedia berdasarkan kata kunci yang dimasukan.
+      parameters:
+        - name: key
+          in: path
+          description: Keyword used to search for Cars
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Ok
+                  data:
+                    type: object
+                    properties:
+                      cars:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            price:
+                              type: integer
+                            size:
+                              type: string
+                            image:
+                              type: string
+                            createdBy:
+                              type: integer
+                            updatedBy:
+                              type: integer
+                            deletedBy:
+                              type: integer
+                            available:
+                              type: boolean
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type: string
+                        example: 
+                          - id: 1
+                            name: Hpnda Civic
+                            price: 999000
+                            size: Medium
+                            image: http://res.cloudinary.com/dptgh7efj/image/upload/v1666151231/samples/o5lxkstoyexkbbltz9tm.jpg
+                            createdBy: 2
+                            updatedBy: 14
+                            deletedBy: null
+                            available: true
+                            createdAt: 2022-10-19T03:47:12.723Z
+                            updatedAt: 2022-10-19T03:47:12.723Z
+                            
+        '400':
+          description: If member tried to put cars data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Unauthorized
+                  message:
+                    type: string
+                    example: Danger area, not user access zone  
+          
+  /api/v1/login:                   
+      post:
+        tags:
+          - User
+        summary: Login all user
+        requestBody:
+          content:
+            application/json:
+              schema:
+                  properties:
+                    email:
+                      type: string
+                      example: admin15
+                    encryptedPassword:
+                      type: string
+                      example: 123
+
+          required: true
+        responses:
+          '200':
+            description: Login success
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                              token:
+                                type: string
+                                example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoic2Ftc3VsQG1haWwuY29tIiwicm9sZSI6Im1lbWJlciIsImNyZWF0ZWRBdCI6IjIwMjItMTAtMjFUMDk6MzE6NDUuMTY5WiIsInVwZGF0ZWRBdCI6IjIwMjItMTAtMjFUMDk6MzE6NDUuMTY5WiIsImlhdCI6MTY2NjM0NDgwNn0.-36RW6844rEOBtH-jShezAz8rghvGlMGha_qNLAnW-M'
+                              createdAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+                              updatedAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+                                
+          '404':
+            description: If failed to login
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Email tidak ditemukan"
+                      
+  /api/v1/register:                   
+      post:
+        tags:
+          - User
+        summary: Register member
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                            name:
+                              type: string
+                              example: Muhammad Samsul
+                            username:
+                              type: string
+                              example: samsul
+                            email:
+                              type: string
+                              example: samsul@mail.com
+                            encryptedPassword:
+                              type: string
+                              example: 123
+          required: true
+        responses:
+          '200':
+            description: an user was created
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                              id:
+                                type: integer
+                                format: int64
+                                example: 17
+                              name:
+                                type: string
+                                example: Muhammad Samsul
+                              username:
+                                type: string
+                                example: samsul
+                              email:
+                                type: string
+                                example: samsul@mail.com
+                              role:
+                                type: string
+                                example: member
+                              createdAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+                              updatedAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+      
+                                    
+  /api/v1/registerAdmin:                   
+     post:
+        tags:
+          - User
+        summary: Register admin
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                            name:
+                              type: string
+                              example: Admin Budi
+                            username:
+                              type: string
+                              example: admin10
+                            email:
+                              type: string
+                              example: admin10@mail.com
+                            encryptedPassword:
+                              type: string
+                              example: 123
+          required: true
+        responses:
+          '200':
+            description: Register success
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                              id:
+                                type: integer
+                                format: int64
+                                example: 16
+                              name:
+                                type: string
+                                example: Admin Budi
+                              username:
+                                type: string
+                                example: admin10
+                              email:
+                                type: string
+                                example: admin10@mail.com
+                              role:
+                                type: string
+                                example: admin
+                              createdAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+                              updatedAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+                                
+          '401':
+            description: If member tried to add user with role admin
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Unauthorized acces is prohibited
+          
+  /api/v1/whoami:
+      get:
+        tags:
+          - User
+        summary: Get user information 
+        description: to get information from the user who is currently logged in
+        responses:
+          '200':
+            description: If data successfully retrived
+            content:
+              application/json:
+                schema:
+                            properties:
+                              id:
+                                type: integer
+                                format: int64
+                                example: 13
+                              name:
+                                type: string
+                                example: admin super
+                              role:
+                                type: string
+                                example: super admin
+                              username:
+                                type: string
+                                example: adminsuper
+                              email:
+                                type: string
+                                example: adminsuper@mail.com
+                              encryptedPassword:
+                                type: string
+                                example: Test Body
+                              createdAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+                              updatedAt:
+                                type: string
+                                example: '2022-10-12T13:25:21.995Z'
+                      
+  /api/v1/allUser:
+        get:
+          tags:
+            - User
+          summary: Get all data 
+          description: To retrive the list of posts
+          responses:
+            '200':
+              description: If data successfully retrived
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        example: OK
+                      data:
+                        type: object
+                        properties:
+                          posts:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                name:
+                                  type: string
+                                role:
+                                  type: integer
+                                username:
+                                  type: string
+                                email:
+                                  type: string
+                                encryptedPassword:
+                                  type: integer
+                                createdAt:
+                                  type: string
+                                updatedAt:
+                                  type: string
+                            example: 
+                              - id: 1
+                                name: Muhammad Samsul
+                                role: member 
+                                username: Samsul
+                                email: samsul@mail.com
+                                encryptedPassword: password
+                                createdAt: 2022-10-19T03:47:12.723Z
+                                updatedAt: 2022-10-19T03:47:12.723Z
+                              - id: 2
+                                name: Admin Super
+                                role: super admin
+                                username: admin
+                                email: adminsuper@mail.com
+                                encryptedPassword: password
+                                createdAt: 2022-10-19T03:48:12.723Z
+                                updatedAt: 2022-10-19T03:48:12.723Z
+                              - id: 3
+                                name: Admin Tiga
+                                role: admin
+                                username: admintiga
+                                email: admintiga@mail.com
+                                encryptedPassword: password
+                                createdAt: 2022-10-19T03:49:12.723Z
+                                updatedAt: 2022-10-19T03:49:12.723Z
+                            
+
+            '401':
+              description: If member tried to retrive the data
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Unauthorized
+                
+                        
+
+
